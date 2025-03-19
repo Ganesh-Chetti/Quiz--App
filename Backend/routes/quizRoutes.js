@@ -18,7 +18,6 @@ router.get("/quizzes/:id", verifyToken, getQuizById);
 
 
 
-
 // Admin Quiz Routes
 router.post("/add-quiz", verifyToken, verifyAdmin, addQuiz);
 router.put("/update-quiz/:id", verifyToken, verifyAdmin, updateQuiz);
