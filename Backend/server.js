@@ -17,6 +17,11 @@ app.use(cors());
 
 connectDB();
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the API!");
+});
+
+
 app.use("/api", authRoutes);
 app.use("/api", quizRoutes);
 app.use("/api", scoreRoutes);

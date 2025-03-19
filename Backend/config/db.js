@@ -3,16 +3,22 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+
 const MONGODB_URI = process.env.MONGODB_URI;
 
 mongoose.set("strictQuery", true);
 
 const connectDB = async () => {
   try {
+    if (!MONGODB_URI) {
+      throw new Error("MONGODB_URI is undefined!");
+    }
+
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+
     console.log("✅ MongoDB Connected");
   } catch (error) {
     console.error("❌ MongoDB Connection Error:", error);
