@@ -11,7 +11,6 @@ const QuizList = ({ onStartQuiz, onQuizProgress }) => {
     const fetchQuizzes = async () => {
       try {
         const token = localStorage.getItem("token");
-        console.log(token)
         if (!token) return navigate("/login");
 
         const response = await axios.get("https://quiz-app-back.vercel.app/api/quizzes", {
