@@ -13,7 +13,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch("https://quiz-app-back.vercel.app/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: formData.username, password: formData.password }),
@@ -25,11 +25,10 @@ const Login = () => {
 
       const data = await response.json();
 
-      localStorage.setItem("token", data.token); // Store JWT token
-      localStorage.setItem("role", data.user.isAdmin ? "admin" : "user"); // Store user role correctly
-      localStorage.setItem("user", JSON.stringify(data.user)); // Store full user object if needed
+      localStorage.setItem("token", data.token); 
+      localStorage.setItem("role", data.user.isAdmin ? "admin" : "user"); 
+      localStorage.setItem("user", JSON.stringify(data.user)); 
 
-      // Notify app of authentication state change
       window.dispatchEvent(new Event("storage"));
       navigate(data.user.isAdmin ? "/admin" : "/");
 

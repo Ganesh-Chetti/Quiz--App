@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2"; 
 import "../styles/Leaderboard.css";
 
 const Leaderboard = () => {
@@ -14,7 +14,7 @@ const Leaderboard = () => {
   const fetchLeaderboard = async () => {
     try {
       const storedToken = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/api/leaderboard", {
+      const response = await axios.get("https://quiz-app-back.vercel.app/api/leaderboard", {
         headers: { Authorization: `Bearer ${storedToken}` },
       });
       setLeaderboard(response.data);
@@ -41,7 +41,7 @@ const Leaderboard = () => {
       if (result.isConfirmed) {
         try {
           const storedToken = localStorage.getItem("token");
-          const response = await axios.delete(`http://localhost:5000/api/delete-score/${id}`, {
+          const response = await axios.delete(`https://quiz-app-back.vercel.app/api/delete-score/${id}`, {
             headers: { Authorization: `Bearer ${storedToken}` },
           });
 
@@ -75,7 +75,7 @@ const Leaderboard = () => {
     try {
       const storedToken = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5000/api/edit-score/${id}`,
+        `https://quiz-app-back.vercel.app/api/edit-score/${id}`,
         { newScore: parseInt(newScore, 10) },
         { headers: { Authorization: `Bearer ${storedToken}` } }
       );

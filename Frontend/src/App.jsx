@@ -12,8 +12,8 @@ import UserRegister from "./components/UserRegister";
 import AdminRegister from "./components/AdminRegister";
 
 const isAuthenticated = () => {
-  const token = localStorage.getItem("token"); // Retrieve token
-  return !!token; // Return true if token exists, otherwise false
+  const token = localStorage.getItem("token"); 
+  return !!token; 
 };
 
 function ProtectedRoute({ element }) {
@@ -29,7 +29,6 @@ function App() {
     return () => window.removeEventListener("storage", handleAuthChange);
   }, []);
 
-  // Apply stored theme before rendering the app
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "dark") {
   document.body.classList.add("dark-mode");

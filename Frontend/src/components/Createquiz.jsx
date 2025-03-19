@@ -23,7 +23,7 @@ const CreateQuiz = () => {
     const fetchQuizzes = async () => {
       try {
         const storedToken = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/quizzes", {
+        const response = await axios.get("https://quiz-app-back.vercel.app/api/quizzes", {
           headers: { Authorization: `Bearer ${storedToken}` },
         });
         setExistingQuizzes(response.data);
@@ -50,7 +50,7 @@ const CreateQuiz = () => {
 
     if (e.target.value === "true_false") {
       updatedQuestions[qIndex].options = ["True", "False"];
-      updatedQuestions[qIndex].correctAnswer = ["True"]; // Default to "True"
+      updatedQuestions[qIndex].correctAnswer = ["True"]; 
     } else {
       updatedQuestions[qIndex].options = ["", "", "", ""];
       updatedQuestions[qIndex].correctAnswer = [];
@@ -69,14 +69,12 @@ const CreateQuiz = () => {
     const updatedQuestions = [...quizData.questions];
 
     if (updatedQuestions[qIndex].type === "multiple") {
-      // Toggle selection for multiple-choice
       const updatedAnswers = updatedQuestions[qIndex].correctAnswer.includes(option)
         ? updatedQuestions[qIndex].correctAnswer.filter((ans) => ans !== option)
         : [...updatedQuestions[qIndex].correctAnswer, option];
 
       updatedQuestions[qIndex].correctAnswer = updatedAnswers;
     } else {
-      // For single choice & true/false, store only one answer
       updatedQuestions[qIndex].correctAnswer = [option];
     }
 
@@ -116,7 +114,7 @@ const CreateQuiz = () => {
     try {
       if (existingQuiz) {
         const response = await axios.get(
-          `http://localhost:5000/api/quizzes/${existingQuiz._id}`,
+          `https://quiz-app-back.vercel.app/api/quizzes/${existingQuiz._id}`,
           { headers: { Authorization: `Bearer ${storedToken}` } }
         );
 
@@ -129,14 +127,14 @@ const CreateQuiz = () => {
         const updatedQuestions = [...response.data.questions, ...quizData.questions];
 
         await axios.put(
-          `http://localhost:5000/api/update-quiz/${existingQuiz._id}`,
+          `https://quiz-app-back.vercel.app/api/update-quiz/${existingQuiz._id}`,
           { title: existingQuiz.title, questions: updatedQuestions },
           { headers: { Authorization: `Bearer ${storedToken}` } }
         );
 
         alert("Quiz updated successfully!");
       } else {
-        await axios.post("http://localhost:5000/api/add-quiz", quizData, {
+        await axios.post("https://quiz-app-back.vercel.app/api/add-quiz", quizData, {
           headers: { Authorization: `Bearer ${storedToken}` },
         });
 

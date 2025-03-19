@@ -10,14 +10,14 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
-  const [progress, setProgress] = useState(0); // Add progress state
+  const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`http://localhost:5000/api/quizzes/${id}`, {
+        const response = await axios.get(`https://quiz-app-back.vercel.app/api/quizzes/${id}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
         setQuiz(response.data);
@@ -47,7 +47,6 @@ const Quiz = () => {
         updatedAnswers[questionIndex] = [selectedOption];
       }
 
-      // Calculate progress
       const answeredQuestions = Object.keys(updatedAnswers).length;
       const totalQuestions = quiz.questions.length;
       setProgress((answeredQuestions / totalQuestions) * 100);
@@ -69,7 +68,7 @@ const Quiz = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/submit-quiz",
+        "https://quiz-app-back.vercel.app/api/submit-quiz",
         {
           quizId: id,
           userId: user ? user._id : null,
@@ -94,7 +93,6 @@ const Quiz = () => {
     <div className="quiz-container">
       <h2>{quiz.title}</h2>
 
-      {/* Progress Bar */}
       <h3>No Of Questions Attemped</h3>
       <div className="progress-bar-container">
         <div className="progress-bar" style={{ width: `${progress}%` }}></div>

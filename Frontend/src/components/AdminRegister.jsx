@@ -13,7 +13,7 @@ const AdminRegister = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/register", {
+      const response = await axios.post("https://quiz-app-back.vercel.app/api/register", {
         ...formData,
         isAdmin: true, // Admin registration
       });

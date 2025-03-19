@@ -11,13 +11,15 @@ const QuizList = ({ onStartQuiz, onQuizProgress }) => {
     const fetchQuizzes = async () => {
       try {
         const token = localStorage.getItem("token");
+        console.log(token)
         if (!token) return navigate("/login");
 
-        const response = await axios.get("http://localhost:5000/api/quizzes", {
+        const response = await axios.get("https://quiz-app-back.vercel.app/api/quizzes", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         setQuizzes(response.data);
+        
       } catch (error) {
         console.error("Error fetching quizzes:", error);
       }
@@ -27,7 +29,7 @@ const QuizList = ({ onStartQuiz, onQuizProgress }) => {
   }, [navigate]);
 
   const handleQuizClick = (quizId) => {
-    onStartQuiz(); // Notify Home component that the quiz has started
+    onStartQuiz();
     navigate(`/quiz/${quizId}`);
   };
 

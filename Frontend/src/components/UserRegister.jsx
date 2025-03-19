@@ -13,9 +13,9 @@ const UserRegister = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/register", {
+      const response = await axios.post("https://quiz-app-back.vercel.app/api/register", {
         ...formData,
-        isAdmin: false, // User registration
+        isAdmin: false, 
       });
       alert(response.data.message);
       navigate("/login");

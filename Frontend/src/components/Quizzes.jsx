@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../styles/Quizzes.css"; // Ensure you have a CSS file for styling
+import "../styles/Quizzes.css"; 
 
 const Quizzes = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
-  const [editingQuestion, setEditingQuestion] = useState(null); // Store question being edited
+  const [editingQuestion, setEditingQuestion] = useState(null); 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const isAdmin = localStorage.getItem("role") === "admin"; // Check if admin
+  const isAdmin = localStorage.getItem("role") === "admin"; 
 
   useEffect(() => {
     fetchQuizzes();
   }, []);
 
-  // Fetch all quizzes
   const fetchQuizzes = async () => {
     setLoading(true);
     try {
       const storedToken = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/api/quizzes", {
+      const response = await axios.get("https://quiz-app-back.vercel.app/api/quizzes", {
         headers: { Authorization: `Bearer ${storedToken}` },
       });
       setQuizzes(response.data);
@@ -32,18 +31,17 @@ const Quizzes = () => {
     }
   };
 
-  // Fetch full quiz details when selected
   const handleSelectQuiz = async (quiz) => {
     if (isAdmin) {
       try {
         const storedToken = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:5000/api/quizzes/${quiz._id}`,
+          `https://quiz-app-back.vercel.app/api/quizzes/${quiz._id}`,
           {
             headers: { Authorization: `Bearer ${storedToken}` },
           }
         );
-        setSelectedQuiz(response.data); // Now selectedQuiz will contain questions
+        setSelectedQuiz(response.data);
       } catch (error) {
         console.error("Error fetching quiz details:", error);
         alert("Failed to fetch quiz details.");
@@ -51,18 +49,17 @@ const Quizzes = () => {
     }
   };
 
-  // Delete quiz
   const handleDeleteQuiz = async (quizId) => {
     if (window.confirm("Are you sure you want to delete this quiz?")) {
       try {
         const storedToken = localStorage.getItem("token");
-        await axios.delete(`http://localhost:5000/api/delete-quiz/${quizId}`, {
+        await axios.delete(`https://quiz-app-back.vercel.app/api/delete-quiz/${quizId}`, {
           headers: { Authorization: `Bearer ${storedToken}` },
         });
 
         alert("Quiz deleted successfully!");
-        setSelectedQuiz(null); // Deselect quiz if it was deleted
-        fetchQuizzes(); // Refresh quizzes
+        setSelectedQuiz(null); 
+        fetchQuizzes(); 
       } catch (error) {
         console.error("Error deleting quiz:", error);
         alert("Failed to delete quiz. Please try again.");
@@ -70,57 +67,49 @@ const Quizzes = () => {
     }
   };
 
-  // Handle editing a question
   const handleEditClick = (question) => {
-    setEditingQuestion(question); // Set the question to be edited
+    setEditingQuestion(question); 
   };
 
-  // Handle updating the edited question
   const handleSaveQuestion = async (quizId) => {
     try {
       const storedToken = localStorage.getItem("token");
-
-      // Update the question inside the quiz
       const updatedQuestions = selectedQuiz.questions.map((q) =>
         q._id === editingQuestion._id ? editingQuestion : q
       );
 
       await axios.put(
-        `http://localhost:5000/api/update-quiz/${quizId}`,
+        `https://quiz-app-back.vercel.app/api/update-quiz/${quizId}`,
         { title: selectedQuiz.title, questions: updatedQuestions },
         { headers: { Authorization: `Bearer ${storedToken}` } }
       );
 
       alert("Question updated successfully!");
-      setEditingQuestion(null); // Clear edit mode
-      handleSelectQuiz({ _id: quizId }); // Refresh quiz details
+      setEditingQuestion(null); 
+      handleSelectQuiz({ _id: quizId });
     } catch (error) {
       console.error("Error updating question:", error);
       alert("Failed to update question. Please try again.");
     }
   };
-
-  // Delete a specific question from the quiz
   const handleDeleteQuestion = async (quizId, questionId) => {
     if (!window.confirm("Are you sure you want to delete this question?"))
       return;
 
     try {
       const storedToken = localStorage.getItem("token");
-
-      // Create a new questions array without the deleted question
       const updatedQuestions = selectedQuiz.questions.filter(
         (q) => q._id !== questionId
       );
 
       await axios.put(
-        `http://localhost:5000/api/update-quiz/${quizId}`,
+        `https://quiz-app-back.vercel.app/api/update-quiz/${quizId}`,
         { title: selectedQuiz.title, questions: updatedQuestions },
         { headers: { Authorization: `Bearer ${storedToken}` } }
       );
 
       alert("Question deleted successfully!");
-      handleSelectQuiz({ _id: quizId }); // Refresh quiz details
+      handleSelectQuiz({ _id: quizId });
     } catch (error) {
       console.error("Error deleting question:", error);
       alert("Failed to delete question. Please try again.");
@@ -223,7 +212,6 @@ const Quizzes = () => {
                 <p>
                   <strong>Type:</strong> {question.type}
                 </p>{" "}
-                {/* Display the question type */}
                 <p>
                   <strong>Options:</strong> {question.options.join(", ")}
                 </p>
