@@ -12,7 +12,6 @@ const { verifyToken, verifyAdmin } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 
-
 // Public Quiz Routes (Authenticated Users)
 router.get("/quizzes", verifyToken, getQuizzes);
 router.get("/quizzes/:id", verifyToken, getQuizById);
