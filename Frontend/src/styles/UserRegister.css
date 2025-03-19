@@ -1,0 +1,107 @@
+/* Container Styling */
+.user-register-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #4d4247, #b56b77); /* Smooth gradient */
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Heading */
+  .user-register-container h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #080808;
+  }
+  
+  /* Form Styling */
+  .user-register-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Input Fields */
+  .user-register-form input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid white;
+    border-radius: 5px;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    width: 95%;
+  }
+  
+  /* Placeholder Color */
+  .user-register-form input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  /* Input Focus Effect */
+  .user-register-form input:focus {
+    border-color: #ffcc00;
+  }
+  
+  /* Submit Button */
+  .user-register-form button {
+    background: #ffcc00;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+  }
+  
+  /* Button Hover Effect */
+  .user-register-form button:hover {
+    background: #ffaa00;
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: #ff4444;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  /* Login Button */
+  .login-button {
+    background: none;
+    border: none;
+    color: #ffcc00;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .login-button:hover {
+    color: #ffaa00;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .user-register-container {
+      width: 90%;
+      padding: 15px;
+    }
+  
+    .user-register-form input {
+      font-size: 14px;
+      padding: 8px;
+    }
+  
+    .user-register-form button {
+      font-size: 16px;
+      padding: 8px;
+    }
+  }
+  

@@ -1,0 +1,64 @@
+.leaderboard-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+    .leaderboard-container h2 {
+        color: #007bff;
+    }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    background: #757373;
+  }
+
+  
+  .edit-btn, .delete-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  .edit-btn {
+    background: green;
+    color: white;
+  }
+  
+  .delete-btn {
+    background: red;
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background: darkgreen;
+  }
+  
+  .delete-btn:hover {
+    background: darkred;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    th, td {
+      padding: 5px;
+    }
+  
+    .edit-btn, .delete-btn {
+      padding: 6px 10px;
+      font-size: 14px;
+    }
+  }
+  

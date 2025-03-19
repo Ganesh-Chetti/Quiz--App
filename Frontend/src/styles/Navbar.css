@@ -1,0 +1,99 @@
+/* Navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #2c3e50;
+    color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  /* Navbar links container */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* Individual links */
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 12px;
+    transition: color 0.3s ease, background 0.3s ease;
+  }
+  
+  /* Hover effect for links */
+  .nav-links a:hover {
+    background: #34495e;
+    border-radius: 5px;
+  }
+  
+  /* User section */
+  .nav-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* Welcome message */
+  .nav-user span {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .nav-user a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 12px;
+    transition: color 0.3s ease, background 0.3s ease;
+  }
+
+  .nav-user a:hover {
+    background: #34495e;
+    border-radius: 5px;
+  }
+  
+  /* Logout Button */
+  .logout-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+  }
+  
+  /* Hover effect */
+  .logout-btn:hover {
+    background: #c0392b;
+  }
+  
+  /* Responsive design */
+  @media screen and (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .nav-links {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .nav-user {
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+  }
+  
