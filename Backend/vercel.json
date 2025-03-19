@@ -1,21 +1,16 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "env": {
-    "MONGODB_URI": "@MONGODB_URI",
-    "JWT_SECRET": "@JWT_SECRET",
-    "PORT": "3000"
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/server.js"
-    }
-  ]
-}
-
+    "version": 2,
+    "builds": [
+      {
+        "src": "server.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/server.js"
+      }
+    ]
+  }
+  
