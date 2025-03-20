@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../styles/CreateQuiz.css";
 
 const CreateQuiz = () => {
@@ -29,6 +31,7 @@ const CreateQuiz = () => {
         setExistingQuizzes(response.data);
       } catch (error) {
         console.error("Error fetching quizzes:", error);
+        toast.error("❌ Error fetching quizzes.");
       }
     };
     fetchQuizzes();
@@ -50,7 +53,7 @@ const CreateQuiz = () => {
 
     if (e.target.value === "true_false") {
       updatedQuestions[qIndex].options = ["True", "False"];
-      updatedQuestions[qIndex].correctAnswer = ["True"]; 
+      updatedQuestions[qIndex].correctAnswer = ["True"];
     } else {
       updatedQuestions[qIndex].options = ["", "", "", ""];
       updatedQuestions[qIndex].correctAnswer = [];
@@ -117,10 +120,10 @@ const CreateQuiz = () => {
           `https://quiz-app-back.vercel.app/api/quizzes/${existingQuiz._id}`,
           { headers: { Authorization: `Bearer ${storedToken}` } }
         );
-
+        
         if (!response.data.questions) {
           console.error("Existing quiz does not contain questions.");
-          alert("Error: Existing quiz structure is invalid.");
+          toast.error("❌ Error: Existing quiz structure is invalid.");
           return;
         }
 
@@ -132,26 +135,33 @@ const CreateQuiz = () => {
           { headers: { Authorization: `Bearer ${storedToken}` } }
         );
 
-        alert("Quiz updated successfully!");
+        toast.success("✅ Quiz updated successfully!");
       } else {
         await axios.post("https://quiz-app-back.vercel.app/api/add-quiz", quizData, {
           headers: { Authorization: `Bearer ${storedToken}` },
         });
 
-        alert("Quiz added successfully!");
+        toast.success("✅ Quiz added successfully!");
       }
-      navigate("/quizzes");
+
+      setTimeout(() => navigate("/quizzes"), 2000);
     } catch (error) {
       console.error("Error saving quiz:", error);
-      alert("Failed to save quiz.");
+      toast.error("❌ Failed to save quiz.");
     }
   };
 
   return (
     <div className="create-quiz-container">
-      <h2>Create Quiz</h2>
+      <ToastContainer position="top-center" autoClose={3000} />
+      <div className="header-container">
+  <h2>Create Quiz</h2>
+  <button className="back-button" onClick={() => navigate("/admin")}>← Back</button>
+</div>
+
+      
       <form onSubmit={handleSubmit}>
-        <label>Title:</label>
+        <label style={{color: '#000'}}>Title:</label>
         <input type="text" className="inputtext" value={quizData.title} onChange={handleTitleChange} required />
 
         {quizData.questions.map((q, qIndex) => (
@@ -174,28 +184,12 @@ const CreateQuiz = () => {
             ))}
 
             <label>Correct Answer:</label>
-            {q.type === "multiple" ? (
-              <div>
-                {q.options.map((option, oIndex) => (
-                  <label key={oIndex}>
-                    <input
-                      type="checkbox"
-                      value={option}
-                      checked={q.correctAnswer.includes(option)}
-                      onChange={(e) => handleCorrectAnswerChange(e, qIndex, option)}
-                    />
-                    {option}
-                  </label>
-                ))}
-              </div>
-            ) : (
-              <select value={q.correctAnswer[0] || ""} onChange={(e) => handleCorrectAnswerChange(e, qIndex, e.target.value)}>
-                <option value="" disabled>Select correct answer</option>
-                {q.options.map((option, oIndex) => (
-                  <option key={oIndex} value={option}>{option}</option>
-                ))}
-              </select>
-            )}
+            <select value={q.correctAnswer[0] || ""} onChange={(e) => handleCorrectAnswerChange(e, qIndex, e.target.value)}>
+              <option value="" disabled>Select correct answer</option>
+              {q.options.map((option, oIndex) => (
+                <option key={oIndex} value={option}>{option}</option>
+              ))}
+            </select>
 
             {quizData.questions.length > 1 && (
               <button type="button" onClick={() => removeQuestion(qIndex)}>Remove Question</button>
@@ -203,8 +197,8 @@ const CreateQuiz = () => {
           </div>
         ))}
 
-        <button type="button" onClick={addQuestion}>Add Question</button>
-        <button type="submit">Submit Quiz</button>
+        <button type="button" className="addsub" onClick={addQuestion}>Add Question</button>
+        <button type="submit" className="addsub">Submit Quiz</button>
       </form>
     </div>
   );

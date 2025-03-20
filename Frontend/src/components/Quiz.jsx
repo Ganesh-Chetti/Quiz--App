@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../styles/Quiz.css";
 
 const Quiz = () => {
@@ -57,7 +59,12 @@ const Quiz = () => {
 
   const submitQuiz = async () => {
     if (Object.keys(answers).length !== quiz.questions.length) {
-      alert("Please answer all questions before submitting.");
+      toast.warning("Please answer all questions before submitting.", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        theme: "colored",
+      });
       return;
     }
 
@@ -79,10 +86,20 @@ const Quiz = () => {
       );
 
       setScore(response.data.score);
-      alert(`Quiz submitted! Your score: ${response.data.score}`);
+      toast.success(`🎉 Quiz submitted! Your score: ${response.data.score}`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        theme: "colored",
+      });
     } catch (err) {
       console.error("Error submitting quiz:", err);
-      alert("Error submitting quiz. Please try again.");
+      toast.error("❌ Error submitting quiz. Please try again.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        theme: "colored",
+      });
     }
   };
 
@@ -93,7 +110,9 @@ const Quiz = () => {
     <div className="quiz-container">
       <h2>{quiz.title}</h2>
 
-      <h3>No Of Questions Attemped</h3>
+      <ToastContainer />
+
+      <h3>No Of Questions Attempted</h3>
       <div className="progress-bar-container">
         <div className="progress-bar" style={{ width: `${progress}%` }}></div>
       </div>
@@ -144,7 +163,9 @@ const Quiz = () => {
       <button className="submit-button" onClick={submitQuiz} disabled={submitted}>
         Submit Quiz
       </button>
-      <button  className="submit-button" onClick={()=>navigate(-1)} style={{background:"gray", marginLeft:"20px"}}>Back</button>
+      <button className="submit-button" onClick={() => navigate(-1)} style={{ background: "gray", marginLeft: "20px" }}>
+        Back
+      </button>
       {submitted && <h3 className="score">Score: {score}</h3>}
     </div>
   );

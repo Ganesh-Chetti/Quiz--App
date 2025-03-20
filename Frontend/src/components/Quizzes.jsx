@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../styles/Quizzes.css"; 
 
 const Quizzes = () => {
@@ -24,8 +26,7 @@ const Quizzes = () => {
       });
       setQuizzes(response.data);
     } catch (error) {
-      console.error("Error fetching quizzes:", error);
-      alert("Failed to fetch quizzes. Please try again later.");
+      toast.error("Failed to fetch quizzes. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -43,8 +44,7 @@ const Quizzes = () => {
         );
         setSelectedQuiz(response.data);
       } catch (error) {
-        console.error("Error fetching quiz details:", error);
-        alert("Failed to fetch quiz details.");
+        toast.error("Failed to fetch quiz details.");
       }
     }
   };
@@ -57,12 +57,11 @@ const Quizzes = () => {
           headers: { Authorization: `Bearer ${storedToken}` },
         });
 
-        alert("Quiz deleted successfully!");
+        toast.success("Quiz deleted successfully!");
         setSelectedQuiz(null); 
         fetchQuizzes(); 
       } catch (error) {
-        console.error("Error deleting quiz:", error);
-        alert("Failed to delete quiz. Please try again.");
+        toast.error("Failed to delete quiz. Please try again.");
       }
     }
   };
@@ -84,12 +83,11 @@ const Quizzes = () => {
         { headers: { Authorization: `Bearer ${storedToken}` } }
       );
 
-      alert("Question updated successfully!");
+      toast.success("Question updated successfully!");
       setEditingQuestion(null); 
       handleSelectQuiz({ _id: quizId });
     } catch (error) {
-      console.error("Error updating question:", error);
-      alert("Failed to update question. Please try again.");
+      toast.error("Failed to update question. Please try again.");
     }
   };
   const handleDeleteQuestion = async (quizId, questionId) => {
@@ -108,17 +106,21 @@ const Quizzes = () => {
         { headers: { Authorization: `Bearer ${storedToken}` } }
       );
 
-      alert("Question deleted successfully!");
+      toast.success("Question deleted successfully!");
       handleSelectQuiz({ _id: quizId });
     } catch (error) {
-      console.error("Error deleting question:", error);
-      alert("Failed to delete question. Please try again.");
+      toast.error("Failed to delete question. Please try again.");
     }
   };
 
   return (
     <div className="quizzes-container">
-      <h2>Available Quizzes</h2>
+       <div className="top-bar">
+        <h2>Available Quizzes</h2>
+        <button className="back-button" onClick={()=>navigate("/admin")}>
+          ← Back
+        </button>
+      </div>
 
       {loading ? (
         <p>Loading quizzes...</p>
@@ -146,6 +148,9 @@ const Quizzes = () => {
           </div>
         ))
       )}
+
+
+<ToastContainer position="top-center" autoClose={2000} />
 
       {selectedQuiz?.questions?.length > 0 ? (
         selectedQuiz.questions.map((question) => (

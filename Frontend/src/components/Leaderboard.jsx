@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2"; 
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../styles/Leaderboard.css";
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const isAdmin = localStorage.getItem("role") === "admin";
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchLeaderboard();
@@ -14,18 +18,21 @@ const Leaderboard = () => {
   const fetchLeaderboard = async () => {
     try {
       const storedToken = localStorage.getItem("token");
-      const response = await axios.get("https://quiz-app-back.vercel.app/api/leaderboard", {
-        headers: { Authorization: `Bearer ${storedToken}` },
-      });
+      const response = await axios.get(
+        "https://quiz-app-back.vercel.app/api/leaderboard",
+        {
+          headers: { Authorization: `Bearer ${storedToken}` },
+        }
+      );
       setLeaderboard(response.data);
     } catch (error) {
-      console.error("Error fetching leaderboard:", error);
+      toast.error("Error fetching leaderboard!");
     }
   };
 
   const handleDeleteScore = async (id) => {
     if (!id) {
-      Swal.fire("Error", "Invalid score ID!", "error");
+      toast.error("Invalid score ID!");
       return;
     }
 
@@ -41,15 +48,17 @@ const Leaderboard = () => {
       if (result.isConfirmed) {
         try {
           const storedToken = localStorage.getItem("token");
-          const response = await axios.delete(`https://quiz-app-back.vercel.app/api/delete-score/${id}`, {
-            headers: { Authorization: `Bearer ${storedToken}` },
-          });
+          await axios.delete(
+            `https://quiz-app-back.vercel.app/api/delete-score/${id}`,
+            {
+              headers: { Authorization: `Bearer ${storedToken}` },
+            }
+          );
 
-          Swal.fire("Deleted!", response.data.message, "success");
+          toast.success("Score deleted successfully!");
           fetchLeaderboard();
         } catch (error) {
-          console.error("Error deleting score:", error);
-          Swal.fire("Error", error.response?.data?.message || "Failed to delete score.", "error");
+          toast.error("Failed to delete score.");
         }
       }
     });
@@ -74,23 +83,36 @@ const Leaderboard = () => {
 
     try {
       const storedToken = localStorage.getItem("token");
-      const response = await axios.put(
+      await axios.put(
         `https://quiz-app-back.vercel.app/api/edit-score/${id}`,
         { newScore: parseInt(newScore, 10) },
         { headers: { Authorization: `Bearer ${storedToken}` } }
       );
 
-      Swal.fire("Success", response.data.message, "success");
+      toast.success("Score updated successfully!");
       fetchLeaderboard();
     } catch (error) {
-      console.error("Error updating score:", error);
-      Swal.fire("Error", error.response?.data?.message || "Failed to update score.", "error");
+      toast.error("Failed to update score.");
+    }
+  };
+
+  const handleBack = () => {
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate("/admin"); // Fallback URL
     }
   };
 
   return (
     <div className="leaderboard-container">
-      <h2>Leaderboard</h2>
+      <div className="top-bar">
+        <h2>Leaderboard</h2>
+        <button className="back-button" onClick={handleBack}>
+          ← Back
+        </button>
+      </div>
+
       {leaderboard.length === 0 ? (
         <p>No scores available.</p>
       ) : (
@@ -106,15 +128,21 @@ const Leaderboard = () => {
           <tbody>
             {leaderboard.map((entry) => (
               <tr key={entry._id}>
-                <td>{entry.username}</td>
-                <td>{entry.quizTitle}</td>
-                <td>{entry.score}</td>
+                <td className="tdname">{entry.username}</td>
+                <td className="tdname">{entry.quizTitle}</td>
+                <td className="tdname">{entry.score}</td>
                 {isAdmin && (
                   <td>
-                    <button onClick={() => handleEditScore(entry._id, entry.score)} className="edit-btn">
+                    <button
+                      onClick={() => handleEditScore(entry._id, entry.score)}
+                      className="edit-btn"
+                    >
                       Edit
                     </button>
-                    <button className="delete-btn" onClick={() => handleDeleteScore(entry._id)}>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDeleteScore(entry._id)}
+                    >
                       Delete
                     </button>
                   </td>
@@ -124,6 +152,8 @@ const Leaderboard = () => {
           </tbody>
         </table>
       )}
+
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 };
